@@ -1,15 +1,38 @@
+/*
+ * @Author: Mukti
+ * @Date: 2021-08-31 15:08:56
+ * @LastEditTime: 2021-08-31 18:18:32
+ * @LastEditors: Mukti
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
+import AudioPlayer from './components/AudioPlayer/Index';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+
+fetch('http://localhost:7001/public/douban-fm.json').then(res => res.json()).then(res => {
+
+  const trackList = res.map(el => {
+    return {
+      title: el.title,
+      artist: el.artist,
+      color: el.color_scheme.primary_color_light,
+      image: el.singers[0].avatar,
+      audioSrc: el.url,
+    }
+  })
+
+  ReactDOM.render(
+    <React.StrictMode>
+      <AudioPlayer tracks={ trackList } />
+      {/* <App /> */}
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+});
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
