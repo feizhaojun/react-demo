@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Controls from './Controls';
+import Backdrop from './Backdrop';
 import './Index.css';
 
 const AudioPlayer = ({ tracks }) => {
@@ -31,9 +32,39 @@ const AudioPlayer = ({ tracks }) => {
     }
   }
 
+	const startTimer = () => {
+    // Clear any timers already running
+    clearInterval(intervalRef.current);
+    
+    intervalRef.current = setInterval(() => {
+      if (audioRef.current.ended) {
+        toNextTrack();
+      } else {
+        setTrackProgress(audioRef.current.currentTime);
+      }
+    }, [1000]);
+  }
+  const onScrub = (value) => {
+    // Clear any timers already running
+    clearInterval(intervalRef.current);
+    audioRef.current.currentTime = value;
+    setTrackProgress(audioRef.current.currentTime);
+  }
+
+  const onScrubEnd = () => {
+    // If not already playing, start
+    if (!isPlaying) {
+      setIsPlaying(true);
+    }
+    startTimer();
+  }
+  const currentPercentage = duration ? `${(trackProgress / duration) * 100}%` : '0%';
+  const trackStyling = `-webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #fff), color-stop(${currentPercentage}, #777))`;
+
   useEffect(() => {
     if (isPlaying) {
       audioRef.current.play();
+      startTimer();
     } else {
       audioRef.current.pause();
     }
@@ -56,7 +87,7 @@ const AudioPlayer = ({ tracks }) => {
     if (isReady.current) {
       audioRef.current.play();
       setIsPlaying(true);
-      // startTimer();
+      startTimer();
     } else {
       // Set the isReady ref as true for the next pass
       isReady.current = true;
@@ -73,6 +104,18 @@ const AudioPlayer = ({ tracks }) => {
         />
         <h2 className="title">{title}</h2>
         <h3 className="artist">{artist}</h3>
+        <input
+          type="range"
+          value={trackProgress}
+          step="1"
+          min="0"
+          max={duration ? duration : `${duration}`}
+          className="progress"
+          onChange={(e) => onScrub(e.target.value)}
+          onMouseUp={onScrubEnd}
+          onKeyUp={onScrubEnd}
+          style={{ background: trackStyling }}
+        />
         <Controls
           isPlaying={isPlaying}
           onPrevClick={toPrevTrack}
@@ -80,6 +123,11 @@ const AudioPlayer = ({ tracks }) => {
           onPlayPauseClick={setIsPlaying}
         />
       </div>
+      <Backdrop
+        trackIndex={trackIndex}
+        activeColor={color}
+        isPlaying={isPlaying}
+      />
     </div>
   </>;
 }
