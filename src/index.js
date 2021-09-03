@@ -1,7 +1,7 @@
 /*
  * @Author: Mukti
  * @Date: 2021-08-31 15:08:56
- * @LastEditTime: 2021-08-31 18:18:32
+ * @LastEditTime: 2021-09-03 11:57:09
  * @LastEditors: Mukti
  */
 import React from 'react';
@@ -12,7 +12,7 @@ import AudioPlayer from './components/AudioPlayer/Index';
 import reportWebVitals from './reportWebVitals';
 
 
-fetch('http://localhost:7001/public/douban-fm.json').then(res => res.json()).then(res => {
+fetch('https://feizhaojun.com/api/public/douban-fm.json').then(res => res.json()).then(res => {
 
   const trackList = res.map(el => {
     return {
