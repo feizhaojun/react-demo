@@ -1,7 +1,7 @@
 /*
  * @Author: Mukti
  * @Date: 2021-08-31 15:08:56
- * @LastEditTime: 2021-09-24 14:36:15
+ * @LastEditTime: 2021-09-24 16:24:58
  * @LastEditors: Mukti
  */
 import React from 'react';
@@ -14,15 +14,16 @@ import reportWebVitals from './reportWebVitals';
 
 fetch('https://feizhaojun.com/api/public/douban-fm.json').then(res => res.json()).then(res => {
 
-  const trackList = res.map(el => {
+  const trackList = [];
+  res.forEach(el => {
     if (!el.delete) {
-      return {
+      trackList.push({
         title: el.title,
         artist: el.artist,
         color: el.color_scheme.primary_color_light,
         image: el.singers[0].avatar,
         audioSrc: el.url,
-      };
+      });
     }
   })
 
