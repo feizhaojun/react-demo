@@ -44,11 +44,13 @@ button {
 }
 
 .title {
+  min-height: 36px;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .artist {
+  min-height: 32px;
   font-weight: 300;
   margin-top: 0;
 }
@@ -59,7 +61,7 @@ button {
   display: flex;
   justify-content: space-between;
   width:  75%;
-  margin: 0 auto 15px;
+  margin: 20px auto 15px;
 }
 
 .audio-controls .prev svg,
