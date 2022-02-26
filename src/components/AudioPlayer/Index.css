@@ -36,6 +36,16 @@ button {
   height: 200px;
   width: 200px;
 }
+.avatar{
+  border-radius: 50%;
+  display: block;
+  margin: auto;
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  top: 130px;
+  right: 20px;
+}
 
 .track-info {
   text-align: center;
@@ -53,6 +63,17 @@ button {
   min-height: 32px;
   font-weight: 300;
   margin-top: 0;
+  margin-bottom: 0;
+}
+.album{
+  min-height: 26px;
+  font-weight: 300;
+  margin-top: 0;
+}
+
+.track-index {
+  font-weight: 300;
+  margin-bottom: 20px;
 }
 
 /* Controls */

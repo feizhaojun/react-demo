@@ -4,11 +4,24 @@ import Backdrop from './Backdrop';
 import './Index.css';
 
 const AudioPlayer = ({ tracks }) => {
-  const [trackIndex, setTrackIndex] = useState(0);
+  let initIndex = +window.location.search.replace(/^\?(\d+)/, "$1") || 1;
+  if (initIndex > tracks.length) {
+    initIndex = tracks.length;
+  }
+  const [trackIndex, setTrackIndex] = useState(initIndex - 1);
   const [trackProgress, setTrackProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(0);
 
-  const { title, artist, color, image, audioSrc } = tracks[trackIndex];
+  const {
+    album,
+    img,
+    year,
+    title,
+    artist,
+    color,
+    avatar,
+    audioSrc,
+  } = tracks[trackIndex];
 
   const audioRef = useRef(new Audio(audioSrc));
   const intervalRef = useRef();
@@ -99,11 +112,18 @@ const AudioPlayer = ({ tracks }) => {
       <div className="track-info">
         <img
           className="artwork"
-          src={image}
-          alt={artist}
+          src={img}
+          alt=""
+        />
+        <img
+          className="avatar"
+          src={avatar}
+          alt=""
         />
         <h2 className="title">{title}</h2>
         <h3 className="artist">{artist}</h3>
+        <h4 className="album">{album} ({year})</h4>
+        <div className="track-index">{trackIndex + 1}/{tracks.length}</div>
         <input
           type="range"
           value={trackProgress}
