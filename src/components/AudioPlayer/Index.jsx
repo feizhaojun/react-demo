@@ -26,6 +26,7 @@ const AudioPlayer = ({ tracks }) => {
   const audioRef = useRef(new Audio(audioSrc));
   const intervalRef = useRef();
   const isReady = useRef(false);
+  const isInit = false;
 
   const { duration } = audioRef.current;
 
@@ -75,6 +76,23 @@ const AudioPlayer = ({ tracks }) => {
   const trackStyling = `-webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, #fff), color-stop(${currentPercentage}, #777))`;
 
   useEffect(() => {
+    console.log('useEffect');
+    setTimeout(() => {
+      audioRef.current.onpause = () => {
+        setIsPlaying(false);
+      };
+      audioRef.current.onplay = () => {
+        setIsPlaying(true);
+      };
+    }, 0);
+    // Pause and clean up on unmount
+    return () => {
+      audioRef.current.pause();
+      clearInterval(intervalRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
     if (isPlaying) {
       audioRef.current.play();
       startTimer();
@@ -82,14 +100,6 @@ const AudioPlayer = ({ tracks }) => {
       audioRef.current.pause();
     }
   }, [isPlaying]);
-
-  useEffect(() => {
-    // Pause and clean up on unmount
-    return () => {
-      audioRef.current.pause();
-      clearInterval(intervalRef.current);
-    }
-  }, []);
 
   useEffect(() => {
     audioRef.current.pause();
