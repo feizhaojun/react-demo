@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === 'development') {
     init(res);
   });
 } else {
-  fetch('https://feizhaojun.com/api/public/douban-fm.json').then(res => res.json()).then(res => {
+  fetch('https://feizhaojun.com/api/douban-fm.json').then(res => res.json()).then(res => {
     init(res);
   });
 }
